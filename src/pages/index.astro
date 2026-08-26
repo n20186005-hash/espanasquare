@@ -3,8 +3,13 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 const mapSrc='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24242.231089972163!2d-64.19386161443332!3d-31.416678213613164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9432a28ddf861391%3A0xc0fdcfc930551a76!2sEspa%C3%B1a%20Square!5e1!3m2!1ses-419!2sar!4v1787715603792!5m2!1ses-419!2sar';
+const site = Astro.site;
+const canonical = site ? new URL(Astro.url.pathname, site).toString() : undefined;
+const heroImage = site ? new URL('/images/plaza-espana-hero.jpg', site).toString() : '/images/plaza-espana-hero.jpg';
 const attraction={
- '@context':'https://schema.org','@type':'TouristAttraction',name:'Plaza España',description:'Plaza urbana y nodo cultural de Nueva Córdoba, vinculada al Museo Metropolitano de Arte Urbano y al circuito de museos de la ciudad.',address:{'@type':'PostalAddress',streetAddress:'Plaza España',addressLocality:'Córdoba',addressRegion:'Córdoba',postalCode:'X5000',addressCountry:'AR'},geo:{'@type':'GeoCoordinates',latitude:-31.416678213613164,longitude:-64.19386161443332},openingHoursSpecification:{'@type':'OpeningHoursSpecification',dayOfWeek:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],opens:'00:00',closes:'23:59'},aggregateRating:{'@type':'AggregateRating',ratingValue:'4.1',reviewCount:'25199'}
+ '@context':'https://schema.org','@type':'TouristAttraction',name:'Plaza España',alternateName:['Plaza España Córdoba','Plaza España Nueva Córdoba','España Square Córdoba Argentina'],description:'Plaza urbana y nodo cultural de Nueva Córdoba (Córdoba, Argentina), vinculada al Museo Metropolitano de Arte Urbano (MMAU) y al circuito de museos de la ciudad. Obra del arquitecto Miguel Ángel Roca, inaugurada en 1980.',additionalType:'https://schema.org/Place',address:{'@type':'PostalAddress',streetAddress:'Plaza España',addressLocality:'Córdoba',addressRegion:'Córdoba',postalCode:'X5000',addressCountry:{
+ '@type':'Country',name:'Argentina',iso31661Alpha2:'AR'
+}},containedInPlace:[{'@type':'City',name:'Córdoba',containedInPlace:{'@type':'AdministrativeArea',name:'Provincia de Córdoba',containedInPlace:{'@type':'Country',name:'Argentina'}}},{'@type':'Neighborhood',name:'Nueva Córdoba'}],geo:{'@type':'GeoCoordinates',latitude:-31.416678213613164,longitude:-64.19386161443332},hasMap:'https://www.google.com/maps?q=Plaza+Espa%C3%B1a+Nueva+C%C3%B3rdoba+%C3%93rdoba+Argentina',openingHoursSpecification:{'@type':'OpeningHoursSpecification',dayOfWeek:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],opens:'00:00',closes:'23:59'},aggregateRating:{'@type':'AggregateRating',ratingValue:'4.1',reviewCount:'25199'},architect:{'@type':'Person',name:'Miguel Ángel Roca'},foundingDate:'1980',image:heroImage,...(canonical?{url:canonical}:{})
 };
 const faq=[
 ['¿La Plaza España tiene entrada?','No. La plaza es un espacio público de acceso libre. Las actividades o exposiciones del MMAU pueden tener programación y horarios propios; conviene verificar la agenda oficial antes de viajar.'],
@@ -15,16 +20,91 @@ const faq=[
 ['¿Es accesible?','La remodelación contemporánea incorporó recorridos peatonales y conexiones con el museo subterráneo. Las condiciones concretas de ascensores, rampas o accesos pueden variar por mantenimiento y deben comprobarse antes de una visita que dependa de ellos.']
 ];
 const faqLd={'@context':'https://schema.org','@type':'FAQPage',mainEntity:faq.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))};
+const disFaq=[
+['¿Qué Plaza España describe espanasquare.com?','Esta guía documenta la Plaza España de la ciudad de Córdoba (Provincia de Córdoba, República Argentina), ubicada en el barrio Nueva Córdoba, entre las avenidas Hipólito Yrigoyen, Chacabuco y Poeta Lugones, coordenadas 31.4167° S, 64.1939° O.'],
+['¿Es la misma plaza que la Plaza de España de Sevilla o Madrid?','No. La Plaza España de Córdoba (Argentina) es una obra urbana proyectada por Miguel Ángel Roca e inaugurada en 1980. No debe confundirse con la Plaza de España de Sevilla (Exposición Iberoamericana de 1929) ni con la Plaza de España de Madrid (con monumento a Cervantes).'],
+['¿Cuáles son los atractivos de la Plaza España de Córdoba (Argentina)?','Los puntos diferenciadores son su composición geométrica de hormigón como monumento urbano, el nodo vial de seis avenidas que converge en su rotonda y el subsuelo, donde desde 2023 funciona el Museo Metropolitano de Arte Urbano (MMAU).'],
+['¿Cómo asegurarme de que busco la plaza correcta?','Para resultados precisos en buscadores, sumá términos geográficos: “Plaza España Córdoba Argentina”, “Plaza España Nueva Córdoba” o “MMAU Plaza España Córdoba”. Evitá búsquedas sin país si tu destino está en América Latina.'],
+['¿Dónde puedo encontrar información oficial de la plaza española que busco?','Para la Plaza de España de Sevilla: Turismo de Sevilla / Ayuntamiento de Sevilla. Para la Plaza de España de Madrid: Turismo de Madrid / Ayuntamiento de Madrid. Para Barcelona: Plaça d’Espanya · Ajuntament de Barcelona.']
+];
+const disFaqLd={'@context':'https://schema.org','@type':'FAQPage',mainEntity:disFaq.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))};
 ---
 <Base title="Plaza España Córdoba | Historia, arquitectura y guía de visita" description="Guía independiente y sin fines de lucro de Plaza España, Córdoba: historia, arquitectura, MMAU, transporte, servicios, accesibilidad y consejos de visita.">
-<script type="application/ld+json" set:html={JSON.stringify(attraction)}></script>
-<script type="application/ld+json" set:html={JSON.stringify(faqLd)}></script>
+<script type="application/ld+json" is:inline set:html={JSON.stringify(attraction)}></script>
+<script type="application/ld+json" is:inline set:html={JSON.stringify(faqLd)}></script>
+<script type="application/ld+json" is:inline set:html={JSON.stringify(disFaqLd)}></script>
 <Header />
 <section class="hero"><div class="shell inner"><span class="eyebrow" style="color:#f1c98b">Nueva Córdoba · Argentina</span><h1>Plaza<br/>España</h1><p>Una rotonda convertida en manifiesto urbano: geometría de hormigón, conexiones metropolitanas y un museo bajo tierra en uno de los cruces culturales más reconocibles de Córdoba.</p><p><a class="btn" href="#historia">Conocer su historia</a> <a class="btn alt" style="color:white;border-color:#fff8" href="#llegar">Planificar la visita</a></p></div></section>
 <main>
 <section class="section"><div class="shell"><div class="facts">
 <div class="fact"><small>Tipo</small><strong>Plaza urbana / parque</strong></div><div class="fact"><small>Acceso exterior</small><strong>Libre</strong></div><div class="fact"><small>Valoración en Maps</small><strong>4,1 · 25.199 reseñas</strong></div><div class="fact"><small>Ubicación</small><strong>Nueva Córdoba</strong></div>
 </div></div></section>
+<section id="desambiguacion" class="section disambig">
+<div class="shell">
+<nav class="breadcrumb" aria-label="Ruta de navegación"><a href="/">Inicio</a><span>›</span><span>Lugares</span><span>›</span><span class="current">Córdoba · Plaza España</span></nav>
+<div class="disambig-grid">
+<div class="disambig-intro">
+<span class="eyebrow">Desambiguación y comparación</span>
+<h2 style="font-size:clamp(2.2rem,4.4vw,4rem);line-height:1.02;margin:.6rem 0 1.2rem">Aseguráte de leer la plaza correcta</h2>
+<p>Este sitio documenta la <strong>Plaza España de Córdoba (Argentina)</strong>, pieza urbana del barrio Nueva Córdoba inaugurada en 1980 sobre proyecto del arquitecto Miguel Ángel Roca y, desde 2023, sede del Museo Metropolitano de Arte Urbano (MMAU) en su subsuelo. Se trata de un espacio público latinoamericano ubicado en el centro geográfico de una de las ciudades universitarias más antiguas de América del Sur.</p>
+<p>El nombre “Plaza España” o “Plaza de España” se repite en ciudades de todo el mundo. Si tu intención era visitar una de las plazas homónimas más célebres del Reino de España, a continuación encontrarás las claves para diferenciarlas sin equívocos.</p>
+<ul class="disambig-list">
+<li><strong>Ubicación geográfica inequívoca.</strong> Barrio Nueva Córdoba, ciudad de Córdoba (Córdoba, Argentina). Coordenadas 31°25′00″ S 64°11′38″ O.</li>
+<li><strong>Autores y época.</strong> Proyecto arquitectónico de Miguel Ángel Roca, inaugurado en 1980 dentro de una reconversión vial del nodo.</li>
+<li><strong>Líneas diferenciales.</strong> Rotonda de seis avenidas, lenguaje geométrico de hormigón y museo subterráneo de arte urbano (MMAU). No incluye edificios de estilo regionalista sevillano, columnatas renacentistas ni fuentes monumentales de corte europeo.</li>
+<li><strong>Fuente oficial.</strong> Municipalidad de Córdoba, Secretaría de Cultura y Dirección de Turismo de la provincia.</li>
+</ul>
+</div>
+<div class="disambig-mapcard">
+<h3 style="margin:0 0 .6rem">Confirmación geográfica</h3>
+<p class="muted" style="margin:0 0 1rem">Si la plaza que buscás no está en Sudamérica, probablemente estés buscando una de las plazas españolas que figuran en la tabla comparativa.</p>
+<div class="paper" style="overflow:hidden;border-radius:12px"><iframe src={mapSrc} allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Mapa de ubicación de Plaza España Córdoba (Argentina)"></iframe></div>
+<p class="muted" style="margin:.8rem 0 0;font-size:.88rem">Fuente cartográfica: Google Maps · Región AR · Idioma es-419.</p>
+</div>
+</div>
+<div class="disambig-table-wrap">
+<h3 style="font-size:clamp(1.6rem,2.8vw,2.4rem);margin:3.5rem 0 1rem">Tabla comparativa: Plaza España en el mundo</h3>
+<p class="muted" style="margin:0 0 1.5rem">Cómo distinguir la Plaza España de Córdoba (Argentina) de las plazas homónimas más renombradas de España.</p>
+<table class="disambig-table">
+<thead>
+<tr><th>Plaza · Ciudad · País</th><th>Construcción y contexto histórico</th><th>Atractivos y paisaje diferenciador</th><th>Público y usos habituales</th></tr>
+</thead>
+<tbody>
+<tr class="highlight">
+<td><strong>Plaza España · Córdoba · Argentina</strong></td>
+<td>Inaugurada en 1980. Proyecto de Miguel Ángel Roca como pieza urbana y nodo vial. Readecuación cultural desde 2018.</td>
+<td>Rotonda de seis avenidas, composición geométrica de hormigón, plataformas peatonales y el Museo Metropolitano de Arte Urbano (MMAU) en el subsuelo desde 2023.</td>
+<td>Vecinos de Nueva Córdoba, público universitario, circuito cultural urbano, visitantes de museos contemporáneos y arte urbano.</td>
+</tr>
+<tr>
+<td>Plaza de España · Sevilla · España</td>
+<td>Construida entre 1914 y 1928 para la Exposición Iberoamericana de 1929. Arquitecto Aníbal González.</td>
+<td>Edificio semicircular de estilo regionalista, canal con botes, azulejos por cada provincia española, puentes de ladrillo y palomares.</td>
+<td>Turismo internacional, rodajes cinematográficos, visitas culturales en masa y eventos institucionales.</td>
+</tr>
+<tr>
+<td>Plaza de España · Madrid · España</td>
+<td>Urbanizada a principios del siglo XX; monumento a Miguel de Cervantes (1915–1929). Edificios emblemáticos del franquismo (Edificio España, Torre de Madrid).</td>
+<td>Monumento a Cervantes con Don Quijote y Sancho, fuentes, bancos de piedra, gran cajón urbano frente a la Gran Vía.</td>
+<td>Turismo masivo, descanso peatonal entre Gran Vía y Parque del Oeste, eventos y concentraciones públicas.</td>
+</tr>
+<tr>
+<td>Plaça d’Espanya · Barcelona · España</td>
+<td>Diseñada por Josep Puig i Cadafalch y Guillem Forteza para la Exposición Internacional de 1929. Reforma olímpica de 1992.</td>
+<td>Estatuas de Nebridio y Fabiola, fuentes ornamentales, columnas venecianas, acceso a Montjuïc y Arenas de Barcelona (antigua plaza de toros).</td>
+<td>Turismo, shopping en Arenas, acceso a Fira Barcelona y conexión modal (metro, bus, tren, aeropuerto).</td>
+</tr>
+</tbody>
+</table>
+<p class="muted" style="margin:1rem 0 0;font-size:.88rem">Lectura rápida: si buscás azulejos sevillanos o monumento a Cervantes, cerrá esta pestaña y buscalas en España. Si buscás arte urbano bajo una rotonda argentina, seguí leyendo.</p>
+</div>
+<div class="faq" style="max-width:850px;margin:3.5rem auto 0">
+<span class="eyebrow">FAQ · Desambiguación</span>
+<h2 style="font-size:2rem;margin:.6rem 0 1.2rem">Preguntas frecuentes para no confundirse</h2>
+{disFaq.map(([q,a])=><details><summary>{q}</summary><p>{a}</p></details>)}
+</div>
+</div>
+</section>
 <section id="historia" class="section"><div class="shell history"><div><span class="eyebrow">Arquitectura y ciudad</span><h2 style="font-size:clamp(2.5rem,5vw,4.8rem);line-height:1">Un vacío urbano pensado como monumento</h2><p>Plaza España ocupa un punto estratégico entre Nueva Córdoba, Parque Sarmiento y Ciudad Universitaria. El espacio forma parte del sistema urbano que creció alrededor del gran parque proyectado a fines del siglo XIX y, durante el siglo XX, se consolidó como una pieza de articulación entre avenidas.</p><p>La configuración arquitectónica por la que hoy se la reconoce fue proyectada por el arquitecto cordobés <strong>Miguel Ángel Roca</strong> y se inauguró en 1980. Su lenguaje se apoya en una composición geométrica de muros, plataformas y elementos verticales, concebida para ser leída tanto desde el peatón como desde el movimiento circular del tránsito.</p><p>La reconversión iniciada en 2018 incorporó infraestructura vial y un nuevo programa cultural. Desde 2023, el subsuelo alberga el <strong>Museo Metropolitano de Arte Urbano (MMAU)</strong>, dedicado a lenguajes contemporáneos, cultura urbana y nuevas tecnologías.</p></div><figure><img src="/images/plaza-espana-mmau-day.jpg" alt="Museo Metropolitano de Arte Urbano (MMAU) en Plaza España" loading="lazy"/><figcaption>El MMAU, el museo de arte urbano que hoy ocupa el subsuelo de la plaza. Licencia detallada en ATTRIBUTIONS.md.</figcaption></figure></div></section>
 <section class="section" style="background:#17201d;color:#eee7da"><div class="shell"><span class="eyebrow" style="color:#dfb674">Cronología esencial</span><div class="timeline" style="margin-top:2rem"><article><strong>Primeras décadas del siglo XX</strong><p>El sector se integra al crecimiento de Nueva Córdoba y a los ejes que rodean Parque Sarmiento.</p></article><article><strong>1980</strong><p>Se inaugura la plaza proyectada por Miguel Ángel Roca, concebida como monumento urbano y pieza de circulación.</p></article><article><strong>Desde 2018</strong><p>Comienza una reconversión integral del nodo, incluida la infraestructura bajo nivel y la recuperación del espacio público.</p></article><article><strong>2023</strong><p>Se inaugura el MMAU en el subsuelo, reforzando la condición de corredor cultural del entorno.</p></article></div></div></section>
 <section id="visita" class="section"><div class="shell"><span class="eyebrow">Planificar la visita</span><h2 style="font-size:3rem">Lo que conviene saber antes de ir</h2><div class="grid3">
