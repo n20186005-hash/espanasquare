@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 168" role="img" aria-labelledby="t d">
+  <title id="t">Plaza España Córdoba</title><desc id="d">Símbolo geométrico inspirado en la planta circular y los tótems de Plaza España.</desc>
+  <g fill="none" stroke="#171914" stroke-width="12" stroke-linecap="square">
+    <circle cx="82" cy="84" r="57"/>
+    <path d="M82 33v102M31 84h102M46 48l72 72M118 48l-72 72" stroke="#a6422b" stroke-width="9"/>
+    <rect x="66" y="68" width="32" height="32" fill="#d7aa57" stroke="#171914" stroke-width="7" transform="rotate(45 82 84)"/>
+  </g>
+  <g fill="#171914">
+    <text x="166" y="76" font-size="47" font-family="Georgia,serif" font-weight="700">Plaza España</text>
+    <text x="169" y="118" font-size="22" font-family="Arial,sans-serif" letter-spacing="5">CÓRDOBA · ARGENTINA</text>
+  </g>
+</svg>

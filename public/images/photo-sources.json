@@ -1,0 +1,26 @@
+[
+  {
+    "id": "hero",
+    "local": "/images/plaza-espana-hero.jpg",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Plaza_Espa%C3%B1a%2C_C%C3%B3rdoba%2C_Argentina.jpg",
+    "file_page": "https://commons.wikimedia.org/wiki/File:Plaza_Espa%C3%B1a,_C%C3%B3rdoba,_Argentina.jpg",
+    "author": "Miguel Angel Roca",
+    "license": "CC BY-SA 3.0"
+  },
+  {
+    "id": "mmau-night",
+    "local": "/images/plaza-espana-mmau-night.jpg",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Plaza_Espa%C3%B1a_y_MmAU_Noche.jpg",
+    "file_page": "https://commons.wikimedia.org/wiki/File:Plaza_Espa%C3%B1a_y_MmAU_Noche.jpg",
+    "author": "GalegoLunaJuanAntonio",
+    "license": "CC0 1.0"
+  },
+  {
+    "id": "plaza-2007",
+    "local": "/images/plaza-espana-2007.jpg",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/5/58/Plaza_Espa%C3%B1a_en_C%C3%B3rdoba_2007-08-08.jpg",
+    "file_page": "https://commons.wikimedia.org/wiki/File:Plaza_Espa%C3%B1a_en_C%C3%B3rdoba_2007-08-08.jpg",
+    "author": "Alvaro Mouriño",
+    "license": "CC BY-SA 2.0"
+  }
+]
