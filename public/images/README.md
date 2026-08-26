@@ -1,10 +1,24 @@
-# Fotografías reales requeridas
+# Fotografías reales de Plaza España (Córdoba)
 
-Este directorio debe contener:
-- `plaza-espana-2010.jpg`
-- `plaza-espana-1980.jpg`
-- `plaza-espana-2007.jpg`
+Este directorio contiene fotografías reales de Plaza España, Córdoba, descargadas de Wikimedia Commons. Las fuentes, autores y licencias están documentados en `photo-sources.json` (máquina) y en `../../ATTRIBUTIONS.md` (humano).
 
-Ejecute `pnpm assets:download` (o `bash scripts/download-assets.sh`) en un entorno con acceso a Wikimedia Commons. Las fuentes y licencias están documentadas en `../../ATTRIBUTIONS.md`.
+## Archivos en uso por el sitio
 
-El contenedor que generó este paquete no pudo resolver los dominios de Wikimedia, por lo que los binarios no pudieron ser incorporados sin falsear el contenido.
+| Archivo local | Uso en el sitio |
+|---|---|
+| `plaza-espana-hero.jpg` | Imagen principal de la galería («vista desde altura») e imagen por defecto de Open Graph |
+| `plaza-espana-2007.jpg` | Galería — Plaza España en 2007 |
+| `plaza-espana-mmau-night.jpg` | Galería — MMAU iluminado de noche |
+
+## Archivos complementarios
+
+- `plaza-espana-mmau-day.jpg` — MMAU de día (sin referencia en el sitio; disponible si se desea ampliar la galería)
+- `social-cover.png` / `social-cover.svg` — portada para redes sociales (sin referencia actual)
+
+## Cómo descargar o actualizar
+
+```
+bash scripts/download-assets.sh
+```
+
+Requiere acceso a Wikimedia Commons. La fuente original de `plaza-espana-hero.jpg` y `plaza-espana-2007.jpg` también se puede obtener desde los enlaces de `photo-sources.json`.
