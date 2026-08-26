@@ -1,0 +1,12 @@
+---
+import Logo from './Logo.astro';
+const dark = Astro.props.dark ?? false;
+---
+<header class="nav" style={dark ? 'position:relative;background:#17201d' : ''}>
+  <div class="shell">
+    <a class="brand" href="/"><Logo /><span>PLAZA ESPAÑA · CÓRDOBA</span></a>
+    <nav class="navlinks" aria-label="Navegación principal">
+      <a href="/#historia">Historia</a><a href="/#visita">Visita</a><a href="/#llegar">Cómo llegar</a><a href="/#entorno">Entorno</a><a href="/#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
