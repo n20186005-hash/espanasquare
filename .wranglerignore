@@ -1,0 +1,28 @@
+# Dependencias y artefactos de build (no se suben al Worker; se compilan en dist/)
+node_modules/
+.astro/
+.wrangler/
+dist/
+
+# Código fuente y herramientas de desarrollo (el Worker usa el build de dist/)
+src/
+scripts/
+public/robots.txt.dev
+
+# Variables de entorno locales
+.env
+.env.*
+!.env.example
+
+# Logs y archivos de la máquina de build
+*.log
+*.ps1
+
+# Editor / SO
+.DS_Store
+.vscode/
+.idea/
+
+# Documentación que no es necesaria en runtime
+ATTRIBUTIONS.md
+README.md

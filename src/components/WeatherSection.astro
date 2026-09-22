@@ -1,0 +1,131 @@
+---
+import { getWeather, computeAdvice, describeCode, uvLabel, windTextEs } from '../lib/weather';
+
+const weather = await getWeather();
+const advice = weather ? computeAdvice(weather) : null;
+
+const alertList = advice?.alerts ?? [];
+const outfitList = advice?.outfit ?? [];
+const activityList = advice?.activity ?? [];
+const itemList = advice?.items ?? [];
+
+const hasAlerts = alertList.length > 0;
+const hasOutfit = outfitList.length > 0;
+const hasActivity = activityList.length > 0;
+const hasItems = itemList.length > 0;
+
+const headline = weather
+  ? `Ahora: ${describeCode(weather.now.code).label} · ${Math.round(weather.day.minC)}–${Math.round(
+      weather.day.maxC
+    )}°C · UV ${uvLabel(weather.day.uvMax)} · ${windTextEs(weather.day.windMaxLevel)}`
+  : '';
+
+const dayLabel = (iso: string) =>
+  new Date(iso + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'short' });
+---
+
+<section id="clima" class="section wx">
+  <div class="shell">
+    <span class="eyebrow">Clima en vivo</span>
+    <h2 style="font-size:3rem">Pronóstico y recomendaciones</h2>
+    <p class="muted" style="max-width:66ch">
+      Condiciones actuales y pronóstico de 7 días para Plaza España, Córdoba, con sugerencias
+      prácticas según el clima local. Las recomendaciones se generan a partir de los datos y no
+      reemplazan avisos oficiales.
+    </p>
+
+    {weather && <p class="wx-headline">{headline}</p>}
+
+    {
+      weather && (
+        <div class="card wx-now-card">
+          <div class="wx-now-top">
+            <span class="wx-icon">{describeCode(weather.now.code).icon}</span>
+            <div>
+              <span class="wx-temp">{Math.round(weather.now.tempC)}°</span>
+              <div class="wx-cond">{describeCode(weather.now.code).label}</div>
+            </div>
+          </div>
+          <ul class="wx-meta">
+            <li>Sensación {Math.round(weather.now.feelsC)}°</li>
+            <li>Humedad {weather.now.humidity}%</li>
+            <li>Prob. lluvia {weather.day.popMax}%</li>
+            <li>Viento {weather.day.windMaxLevel} ({Math.round(weather.day.windMaxKmh)} km/h)</li>
+          </ul>
+        </div>
+      )
+    }
+
+    {
+      hasAlerts && (
+        <div class="wx-alert">
+          <strong>⚠️ Aviso</strong>
+          <ul>{alertList.map((a) => <li>{a}</li>)}</ul>
+        </div>
+      )
+    }
+
+    {
+      hasOutfit && (
+        <div class="wx-block">
+          <h3>🧥 Cómo vestirse</h3>
+          <ul>{outfitList.map((o) => <li>{o}</li>)}</ul>
+        </div>
+      )
+    }
+
+    {
+      hasActivity && (
+        <div class="wx-block">
+          <h3>🗺️ Qué hacer hoy</h3>
+          <ul>{activityList.map((a) => <li>{a}</li>)}</ul>
+        </div>
+      )
+    }
+
+    {
+      hasItems && (
+        <div class="wx-block">
+          <h3>🎒 Llevá con vos</h3>
+          <div class="wx-items">{itemList.map((i) => <span class="wx-item">{i.emoji} {i.label}</span>)}</div>
+        </div>
+      )
+    }
+
+    {
+      weather && (
+        <div class="wx-forecast">
+          {weather.daily.map((d) => (
+            <div class="wx-day">
+              <span class="wx-dow">{dayLabel(d.date)}</span>
+              <span class="wx-icon">{describeCode(d.code).icon}</span>
+              <span class="wx-cond">{describeCode(d.code).label}</span>
+              <span class="wx-range">{Math.round(d.maxC)}° / {Math.round(d.minC)}°</span>
+              <span class="wx-pop">lluvia {d.pop}%</span>
+            </div>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      !weather && (
+        <div class="wx-fallback">
+          <p>
+            Datos en vivo no disponibles en este momento. Volvé a consultar en unos minutos; la plaza
+            sigue abierta al público.
+          </p>
+        </div>
+      )
+    }
+
+    {
+      weather && (
+        <p class="wx-note">
+          Datos de un modelo de pronóstico meteorológico, actualizados cada pocos minutos. Para alertas
+          oficiales, consultá la fuente meteorológica de tu país.
+        </p>
+      )
+    }
+  </div>
+</section>
