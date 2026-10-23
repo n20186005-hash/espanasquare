@@ -1,64 +1,7 @@
-// Service worker for espanasquare.com (PWA offline support).
-// Strategy:
-//  - Navigations: network-first, fall back to cached page, then to cached "/".
-//  - Same-origin static assets (images/css/js/fonts/manifest): stale-while-revalidate.
-const CACHE = 'espanasquare-v1';
-const APP_SHELL = ['/', '/site.webmanifest', '/icons/favicon.svg', '/icon-192.png', '/icon-512.png'];
-
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(APP_SHELL).catch(() => {}))
-  );
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-    )
-  );
-  self.clients.claim();
-});
-
-function isStaticAsset(url) {
-  if (url.origin !== self.location.origin) return false;
-  return /\.(?:png|jpe?g|gif|webp|svg|css|js|woff2?|webmanifest|ico)$/i.test(url.pathname);
-}
-
-self.addEventListener('fetch', (event) => {
-  const { request } = event;
-  if (request.method !== 'GET') return;
-
-  const url = new URL(request.url);
-
-  if (request.mode === 'navigate') {
-    event.respondWith(
-      fetch(request)
-        .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((cache) => cache.put(request, copy));
-          return res;
-        })
-        .catch(() =>
-          caches.match(request).then((cached) => cached || caches.match('/'))
-        )
-    );
-    return;
-  }
-
-  if (isStaticAsset(url)) {
-    event.respondWith(
-      caches.match(request).then((cached) => {
-        const network = fetch(request)
-          .then((res) => {
-            const copy = res.clone();
-            caches.open(CACHE).then((cache) => cache.put(request, copy));
-            return res;
-          })
-          .catch(() => cached);
-        return cached || network;
-      })
-    );
-  }
+const CACHE='espanasquare-static-v2';
+self.addEventListener('install',()=>self.skipWaiting());
+self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('espanasquare-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',event=>{const request=event.request,url=new URL(request.url);if(request.method!=='GET'||url.origin!==self.location.origin)return;
+ if(request.mode==='navigate'){event.respondWith(fetch(request).catch(()=>new Response('Sin conexión. Volvé a cargar para consultar información y pronósticos actuales.',{status:503,headers:{'Content-Type':'text/plain; charset=utf-8'}})));return;}
+ if(/\.(png|jpe?g|webp|svg|css|js|webmanifest)$/i.test(url.pathname))event.respondWith(fetch(request).then(response=>{if(response.ok)caches.open(CACHE).then(cache=>cache.put(request,response.clone()));return response;}).catch(()=>caches.match(request).then(cached=>cached||new Response('No disponible',{status:503}))));
 });

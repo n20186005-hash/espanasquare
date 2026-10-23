@@ -1,8 +1,8 @@
 ---
 import '../styles.css';
 import { SITE_NAME } from '../data/site';
-interface Props { title: string; description: string; image?: string; imageAlt?: string; }
-const { title, description, image='/images/plaza-espana-hero.jpg', imageAlt='Plaza España en Córdoba, Argentina' } = Astro.props;
+interface Props { title: string; description: string; image?: string; imageAlt?: string; noindex?: boolean; }
+const { title, description, image='/images/plaza-espana-hero.jpg', imageAlt='Plaza España en 2010 · Miguel Angel Roca · CC BY-SA 3.0', noindex=false } = Astro.props;
 const site = Astro.site;
 const canonical = site ? new URL(Astro.url.pathname, site).toString() : undefined;
 const ogImage = site ? new URL(image, site).toString() : undefined;
@@ -15,7 +15,8 @@ const ogImage = site ? new URL(image, site).toString() : undefined;
   <meta name="description" content={description} />
   <meta name="theme-color" content="#17201d" />
   <title>{title}</title>
-  {canonical && <link rel="canonical" href={canonical} />}
+  {!noindex && canonical && <link rel="canonical" href={canonical} />}
+  {noindex && <meta name="robots" content="noindex, follow" />}
   <meta property="og:type" content="website" />
   <meta property="og:title" content={title} />
   <meta property="og:site_name" content={SITE_NAME} />
@@ -32,30 +33,10 @@ const ogImage = site ? new URL(image, site).toString() : undefined;
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="Plaza España" />
-  <script is:inline>
-    (() => {
-      const consent = localStorage.getItem('pe-cookie-consent');
-      if (!consent) return;
-      try {
-        const prefs = JSON.parse(consent);
-        if (!prefs.analytics) return;
-        const s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP';
-        document.head.appendChild(s);
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments)}
-        gtag('js', new Date());
-        gtag('config', 'G-HXM22WWPKP', { anonymize_ip: true });
-      } catch {}
-    })();
-  </script>
-  <script is:inline>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
-      });
-    }
+  <script>
+    import { initializeAnalytics } from '../lib/analytics';
+    initializeAnalytics();
+    if ('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
   </script>
 </head>
 <body><slot /></body>

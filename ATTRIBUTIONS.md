@@ -1,33 +1,8 @@
-# Créditos y licencias de imágenes
+# Fotografías y licencias
 
-Este proyecto utiliza fotografías reales de Plaza España, Córdoba, descargadas de Wikimedia Commons. El código apunta a copias locales dentro de `public/images/`.
+Las copias conservadas se contrastaron con los archivos originales exactos de Wikimedia Commons. Los créditos se sirven junto a cada fotografía, incluida la imagen de fondo de la portada.
 
-## Imágenes en uso por el sitio
+- `public/images/plaza-espana-hero.jpg`: [Plaza España, Córdoba, Argentina](https://commons.wikimedia.org/wiki/File:Plaza_Espa%C3%B1a,_C%C3%B3rdoba,_Argentina.jpg), autor indicado en la fuente: Miguel Angel Roca, 6 de mayo de 2010. [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). Archivo original sin cambios; la presentación puede recortar y oscurecer la foto. Las adaptaciones de esta imagen conservan la licencia CC BY-SA 3.0.
+- `public/images/plaza-espana-mmau-night.jpg`: [Plaza España y MmAU Noche](https://commons.wikimedia.org/wiki/File:Plaza_Espa%C3%B1a_y_MmAU_Noche.jpg), GalegoLunaJuanAntonio, 4 de julio de 2023. [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). Archivo original sin cambios; el encuadre de presentación puede variar.
 
-1. `public/images/plaza-espana-hero.jpg`
-   - Título: *Plaza España, Córdoba, Argentina.jpg*
-   - Autor: Miguel Angel Roca
-   - Fecha de la fotografía: 6 de mayo de 2010
-   - Fuente: Wikimedia Commons
-   - Licencia: CC BY-SA 3.0
-   - Página de archivo: https://commons.wikimedia.org/wiki/File:Plaza_Espa%C3%B1a,_C%C3%B3rdoba,_Argentina.jpg
-
-2. `public/images/plaza-espana-2007.jpg`
-   - Título: *Plaza España en Córdoba 2007-08-08.jpg*
-   - Autor: Alvaro Mouriño
-   - Fecha: 8 de agosto de 2007
-   - Licencia: CC BY-SA 2.0
-   - Página de archivo: https://commons.wikimedia.org/wiki/File:Plaza_Espa%C3%B1a_en_C%C3%B3rdoba_2007-08-08.jpg
-
-3. `public/images/plaza-espana-mmau-night.jpg`
-   - Título: *Plaza España y MmAU Noche.jpg*
-   - Autor: GalegoLunaJuanAntonio
-   - Licencia: CC0 1.0 (dominio público / dedicación)
-   - Página de archivo: https://commons.wikimedia.org/wiki/File:Plaza_Espa%C3%B1a_y_MmAU_Noche.jpg
-
-## Archivos complementarios (no referenciados por el sitio)
-
-- `public/images/plaza-espana-mmau-day.jpg` — MMAU de día; fuente por confirmar antes de publicar.
-- `public/images/social-cover.png` / `public/images/social-cover.svg` — portada para redes sociales; obra propia del solicitante.
-
-Las imágenes no implican respaldo de los autores ni de Wikimedia Commons a este sitio.
+Las fotos son registros históricos, no pruebas de acceso ni servicios actuales. Los créditos no implican respaldo de los autores a esta guía.

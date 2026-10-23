@@ -1,0 +1,6 @@
+---
+const {photo} = Astro.props;
+const night=photo==='night';
+const source=night?'https://commons.wikimedia.org/wiki/File:Plaza_Espa%C3%B1a_y_MmAU_Noche.jpg':'https://commons.wikimedia.org/wiki/File:Plaza_Espa%C3%B1a,_C%C3%B3rdoba,_Argentina.jpg';
+---
+<span class="photo-credit">Foto: <a href={source}>{night?'GalegoLunaJuanAntonio · 4 de julio de 2023':'Miguel Angel Roca · 6 de mayo de 2010'}</a> · <a href={night?'https://creativecommons.org/publicdomain/zero/1.0/':'https://creativecommons.org/licenses/by-sa/3.0/'}>{night?'CC0 1.0':'CC BY-SA 3.0'}</a> · Archivo original; encuadre y oscurecimiento por presentación donde corresponda.</span>

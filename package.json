@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.24.0",
-  "engines": {"node": "24.19.0"},
+  "engines": {
+    "node": "24.19.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
@@ -12,7 +14,8 @@
     "preview": "astro preview",
     "deploy": "wrangler deploy",
     "audit:dist": "node scripts/audit-dist.mjs",
-    "assets:download": "bash scripts/download-assets.sh"
+    "assets:download": "bash scripts/download-assets.sh",
+    "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.2.3",

@@ -1,24 +1,5 @@
-# Fotografías reales de Plaza España (Córdoba)
+# Fotos de Plaza España, Córdoba
 
-Este directorio contiene fotografías reales de Plaza España, Córdoba, descargadas de Wikimedia Commons. Las fuentes, autores y licencias están documentados en `photo-sources.json` (máquina) y en `../../ATTRIBUTIONS.md` (humano).
+Se utilizan dos archivos originales: `plaza-espana-hero.jpg` (Miguel Angel Roca, 2010, CC BY-SA 3.0) y `plaza-espana-mmau-night.jpg` (GalegoLunaJuanAntonio, 2023, CC0 1.0). Cada foto tiene un crédito visible con fuente y licencia. Los detalles están en `photo-sources.json` y `../../ATTRIBUTIONS.md`.
 
-## Archivos en uso por el sitio
-
-| Archivo local | Uso en el sitio |
-|---|---|
-| `plaza-espana-hero.jpg` | Imagen principal de la galería («vista desde altura») e imagen por defecto de Open Graph |
-| `plaza-espana-2007.jpg` | Galería — Plaza España en 2007 |
-| `plaza-espana-mmau-night.jpg` | Galería — MMAU iluminado de noche |
-
-## Archivos complementarios
-
-- `plaza-espana-mmau-day.jpg` — MMAU de día (sin referencia en el sitio; disponible si se desea ampliar la galería)
-- `social-cover.png` / `social-cover.svg` — portada para redes sociales (sin referencia actual)
-
-## Cómo descargar o actualizar
-
-```
-bash scripts/download-assets.sh
-```
-
-Requiere acceso a Wikimedia Commons. La fuente original de `plaza-espana-hero.jpg` y `plaza-espana-2007.jpg` también se puede obtener desde los enlaces de `photo-sources.json`.
+El script `pnpm assets:download` vuelve a descargar esos mismos originales. Los archivos de portada social e iconos existentes son recursos gráficos separados; no se presentan como fotos de la plaza.

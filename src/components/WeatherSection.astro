@@ -3,6 +3,7 @@ import { getWeather, computeAdvice, describeCode, uvLabel, windTextEs } from '..
 
 const weather = await getWeather();
 const advice = weather ? computeAdvice(weather) : null;
+const stale=weather && Date.now()-Date.parse(weather.fetchedAt)>10*60*1000;
 
 const alertList = advice?.alerts ?? [];
 const outfitList = advice?.outfit ?? [];
@@ -35,6 +36,7 @@ const dayLabel = (iso: string) =>
     </p>
 
     {weather && <p class="wx-headline">{headline}</p>}
+    {stale && <p class="wx-fallback">No se pudo renovar el pronóstico. Se muestran datos anteriores; revisá la hora de obtención y una fuente oficial.</p>}
 
     {
       weather && (
@@ -112,8 +114,7 @@ const dayLabel = (iso: string) =>
       !weather && (
         <div class="wx-fallback">
           <p>
-            Datos en vivo no disponibles en este momento. Volvé a consultar en unos minutos; la plaza
-            sigue abierta al público.
+            Datos en vivo no disponibles en este momento. Volvé a consultar en unos minutos o revisá una fuente meteorológica oficial.
           </p>
         </div>
       )
@@ -122,8 +123,7 @@ const dayLabel = (iso: string) =>
     {
       weather && (
         <p class="wx-note">
-          Datos de un modelo de pronóstico meteorológico, actualizados cada pocos minutos. Para alertas
-          oficiales, consultá la fuente meteorológica de tu país.
+          Datos de un modelo meteorológico al cargar esta página, no un parte de alertas oficiales. Actualización: {new Date(weather.fetchedAt).toLocaleString('es-AR', {timeZone:'America/Argentina/Cordoba'})}. Fuente: <a href="https://open-meteo.com/">Open-Meteo</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Consultá los avisos del <a href="https://www.smn.gob.ar/">Servicio Meteorológico Nacional</a>.
         </p>
       )
     }

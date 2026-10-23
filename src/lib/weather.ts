@@ -1,5 +1,4 @@
 // Servidor: clima en vivo vía Open-Meteo (sin clave). Se cachea en memoria.
-// No comentar en el front-end nada sobre la fuente ni la ausencia de clave.
 
 export interface WeatherNow {
   tempC: number;
@@ -51,8 +50,8 @@ export interface WeatherAdvice {
   alerts: string[];
 }
 
-const LAT = -31.435;
-const LON = -64.187;
+const LAT = -31.4285745;
+const LON = -64.1848176;
 
 // Córdoba (inglés neutral para evitar cruces de locale en el servidor).
 const URL =
@@ -172,20 +171,20 @@ export function computeAdvice(d: WeatherData): WeatherAdvice {
   const windMax = d.day.windMaxLevel;
 
   // --- Precipitación ---
-  if (pop >= 60 || isRain(nowCode)) {
+  if (pop >= 60 || isRain(nowCode) || isStorm(nowCode)) {
     if (isStorm(nowCode)) {
       alerts.push('Tormenta eléctrica: cuidado con los rayos; no te refugies bajo árboles ni en zonas descubiertas.');
-      activity.push('Los paseos acuáticos y al aire libre probablemente estén cerrados; preferí espacios cubiertos.');
+      activity.push('Revisá avisos oficiales y postergá recorridos expuestos; no se infieren cierres a partir del pronóstico.');
     } else if (isHeavy(nowCode)) {
       alerts.push('Lluvia intensa: evitá zonas bajas y encharcadas.');
-      activity.push('No conviene estar mucho rato afuera; los paseos acuáticos pueden suspenderse. Priorizá museos y salas cubiertas (MMAU, Museo Caraffa).');
+      activity.push('Mantené flexible el paseo exterior. Verificá horarios y acceso antes de elegir un museo como alternativa.');
       items.push({ emoji: '🧥', label: 'Impermeable (mejor sin paraguas de mango largo si hay viento)' });
     } else if (isDrizzle(nowCode)) {
       activity.push('Llovizna: el piso resbala, caminá con cuidado; las actividades al aire libre se disfrutan menos.');
       items.push({ emoji: '☂️', label: 'Paraguas plegable' });
     } else {
       outfit.push(`Probabilidad de lluvia alta (≈${pop}%). Llevá paraguas o impermeable por las dudas.`);
-      activity.push('Dejá flexible el plan al aire libre y priorizá espacios cubiertos (MMAU, Museo Caraffa).');
+      activity.push('Dejá flexible el plan al aire libre; confirmá la apertura de cualquier alternativa cubierta.');
       items.push({ emoji: '🌂', label: 'Paraguas / impermeable' });
     }
   }
@@ -222,12 +221,12 @@ export function computeAdvice(d: WeatherData): WeatherAdvice {
   }
 
   // --- Cielo (se usa el código del día) ---
-  if (isClear(dayCode)) {
+  if (isClear(dayCode) && max < 32 && windMax < 7 && !isRain(nowCode) && !isStorm(nowCode)) {
     outfit.push('Buen clima despejado: ideal para recorrer y fotografiar al aire libre.');
     activity.push('Luz nítida: buen momento para fotos de arquitectura y del amanecer/atardecer.');
     items.push({ emoji: '🌞', label: 'Protección solar' });
   }
-  if (isOvercast(dayCode)) {
+  if (isOvercast(dayCode) && max < 32 && windMax < 7 && !isRain(nowCode) && !isStorm(nowCode)) {
     outfit.push('Cielo cubierto y luz suave: muy cómodo para caminar mucho rato.');
     activity.push('Sin sol fuerte, recorrer barrios y el Parque Sarmiento es más agradable.');
   }
@@ -273,6 +272,9 @@ export async function getWeather(): Promise<WeatherData | null> {
     const json = (await res.json()) as OMResponse;
     const c = json.current;
     const dd = json.daily;
+    const currentFields: (keyof OMCurrent)[] = ['temperature_2m','apparent_temperature','relative_humidity_2m','wind_speed_10m','weather_code','is_day'];
+    const numericFields: (keyof OMDaily)[] = ['weather_code','temperature_2m_max','temperature_2m_min','precipitation_probability_max','wind_speed_10m_max','uv_index_max'];
+    if (!c || !dd || !Array.isArray(dd.time) || dd.time.length === 0 || !currentFields.every(key=>Number.isFinite(c[key])) || !numericFields.every(key=>Array.isArray(dd[key]) && dd[key].length === dd.time.length && dd[key].every(value=>typeof value === 'number' && Number.isFinite(value))) || !Array.isArray(dd.sunrise) || !Array.isArray(dd.sunset)) throw new Error('invalid forecast');
 
     const data: WeatherData = {
       now: {

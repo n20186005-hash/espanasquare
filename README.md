@@ -1,49 +1,19 @@
-# Guía Plaza España Córdoba
+# Plaza España, Córdoba — guía independiente
 
-Micrositio informativo independiente y sin fines de lucro sobre Plaza España, Córdoba, Argentina.
+Guía en español de Argentina sobre la plaza de Nueva Córdoba. Astro sirve las páginas y el pronóstico meteorológico desde Cloudflare Workers; el clima se obtiene en el servidor mediante Open-Meteo.
 
-## Stack
-- Astro 7.2.6
-- Tailwind CSS 4.3.3
-- TypeScript 6.0.3
-- @astrojs/cloudflare 14.2.3
-- @astrojs/sitemap 3.7.3
-- pnpm 11.24.0
-- Node.js 24.19.0
-- Cloudflare Workers
+## Desarrollo y validación
 
-## Configuración del dominio
-El origen de producción se configura **solo** en `astro.config.ts`, constante `SITE`. Puede permanecer vacío: el proyecto no inventa dominios y el sitemap solo se activa cuando `SITE` tiene valor.
+Requiere Node.js 24 y pnpm según `package.json`.
 
-## Imágenes
-El sitio espera tres fotografías reales en `public/images/`. El script `pnpm assets:download` las descarga desde Wikimedia Commons y mantiene las páginas de atribución en `ATTRIBUTIONS.md`.
-
-> Nota del paquete generado en esta sesión: el entorno de ejecución no pudo resolver `commons.wikimedia.org`/`upload.wikimedia.org`, por lo que no fue posible descargar los binarios de las fotografías en este contenedor. No se sustituyeron por imágenes generadas artificialmente ni por archivos falsos.
-
-## Instalación y validación
-```bash
-corepack enable
-pnpm assets:download
-CI=1 corepack pnpm install
+```sh
+pnpm install --frozen-lockfile
 pnpm check
 pnpm build
-pnpm audit:dist
 ```
 
-Para la validación final exigida:
-```bash
-rm -rf node_modules
-CI=1 corepack pnpm install --frozen-lockfile
-pnpm check
-pnpm build
-pnpm audit:dist
-```
+La salida SSR está en `dist/server`, con recursos públicos en `dist/client`. Usá la configuración generada por el adaptador para ejecutar o desplegar el Worker; un directorio sin HTML estático no acredita por sí solo las rutas SSR. Las páginas públicas son `/`, `/privacidad/`, `/terminos/` y `/cookies/`; los errores devuelven 404.
 
-## Fuentes informativas principales
-- Turismo de la Municipalidad de Córdoba: ficha de Plaza España.
-- Cultura de la Municipalidad de Córdoba: Museo Metropolitano de Arte Urbano.
-- Turismo de Córdoba: circuito Centro Histórico y Nueva Córdoba.
-- Google Maps: dirección, puntuación y cantidad de reseñas aportadas por el solicitante.
+Las fuentes oficiales se enlazan en la guía. La ficha de Maps para el exterior no establece los horarios del MMAU. Las fotos tienen créditos visibles y documentación en `ATTRIBUTIONS.md`; `pnpm assets:download` descarga los dos originales conservados.
 
-## Privacidad
-Google Analytics 4 (`G-HXM22WWPKP`) solo se carga después de que el visitante habilita cookies analíticas en `/cookies/`.
+Google Analytics mantiene la autorización opcional en `/cookies/`. La elección no controla mapas, clima ni recursos o registros propios del alojamiento.

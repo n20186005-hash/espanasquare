@@ -8,7 +8,8 @@ const SITE = 'https://espanasquare.com'; // Production origin: enables canonical
 export default defineConfig({
   site: SITE || undefined,
   output: 'server',
+  session: false,
   adapter: cloudflare({ imageService: 'compile' }),
   integrations: SITE ? [sitemap()] : [],
-  vite: { plugins: [tailwindcss()] }
+  vite: { plugins: [tailwindcss()], build: { assetsInlineLimit: 0 } }
 });
