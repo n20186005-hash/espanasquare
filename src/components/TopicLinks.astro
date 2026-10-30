@@ -1,0 +1,71 @@
+---
+import { TOPICS, TOPIC_GROUP_LABELS, topicsByGroup, type TopicGroup } from '../data/topics';
+const grouped = topicsByGroup();
+const groups = (Object.keys(TOPIC_GROUP_LABELS) as TopicGroup[]).filter((g) => grouped[g].length > 0);
+---
+
+<section id="guias" class="section guias">
+  <div class="shell">
+    <span class="eyebrow">Guías temáticas</span>
+    <h2>Guías para visitar Plaza España y Nueva Córdoba</h2>
+    <p class="muted" style="max-width:70ch">
+      Páginas independientes que resuelven una duda concreta: cómo llegar, el MMAU, la historia, el
+      estacionamiento, los museos cercanos y los cafés. Cada una cita fuentes verificables.
+    </p>
+    <div class="guia-groups">
+      {
+        groups.map((g) => (
+          <div class="guia-group">
+            <h3>{TOPIC_GROUP_LABELS[g]}</h3>
+            <ul>
+              {grouped[g].map((t) => (
+                <li><a href={`/${t.slug}/`}>{t.content.h1}</a></li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .guias {
+    background: #fbf6ec;
+  }
+  .guia-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .guia-group {
+    padding: 1.4rem;
+    border: 1px solid #d6c9b6;
+    background: #fffaf2;
+    border-radius: 12px;
+  }
+  .guia-group h3 {
+    margin: 0 0 0.8rem;
+    font-size: 1.1rem;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--brick);
+  }
+  .guia-group ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .guia-group li {
+    margin: 0 0 0.7rem;
+    padding-left: 0.9rem;
+    border-left: 3px solid var(--gold);
+  }
+  .guia-group a {
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .guia-group a:hover {
+    text-decoration: underline;
+  }
+</style>

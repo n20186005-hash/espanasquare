@@ -1,0 +1,199 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import { breadcrumbSchema, faqSchema, webPageSchema } from '../lib/schema';
+import { SITE_URL } from '../data/site';
+import { getTopicTitle, type Topic } from '../data/topics';
+
+interface Props {
+  topic: Topic;
+}
+const { topic } = Astro.props;
+const c = topic.content;
+const canonicalUrl = SITE_URL + '/' + topic.slug + '/';
+
+const breadcrumb = breadcrumbSchema([
+  { name: 'Inicio', url: SITE_URL + '/' },
+  { name: c.h1, url: canonicalUrl },
+]);
+const faqLd = faqSchema(c.faq.map((f) => ({ q: f.q, a: f.a })));
+const pageLd = webPageSchema({
+  title: c.title,
+  description: c.description,
+  url: canonicalUrl,
+  aboutAttraction: true,
+});
+
+const related = topic.related
+  .map((slug) => ({ slug, title: getTopicTitle(slug) }))
+  .filter((r) => r.title);
+---
+
+<Base title={c.title} description={c.description}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(pageLd)}></script>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumb)}></script>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqLd)}></script>
+  <Header />
+  <nav class="breadcrumb shell" aria-label="Ruta de navegación">
+    <a href="/">Inicio</a><span aria-hidden="true">›</span><span class="current">{c.h1}</span>
+  </nav>
+  <section class="hero topic-hero">
+    <div class="shell inner">
+      <span class="eyebrow" style="color:#f1c98b">{c.kicker}</span>
+      <h1>{c.h1}</h1>
+      <p>{c.lead}</p>
+    </div>
+  </section>
+  <main id="contenido">
+    <section class="section">
+      <div class="shell">
+        <div class="topic-grid">
+          <div class="topic-body">
+            {
+              c.sections.map((s) => (
+                <article class="topic-section">
+                  <h2>{s.heading}</h2>
+                  {s.paragraphs && s.paragraphs.map((p) => <p>{p}</p>)}
+                  {s.bullets && (
+                    <ul>
+                      {s.bullets.map((b) => <li>{b}</li>)}
+                    </ul>
+                  )}
+                </article>
+              ))
+            }
+            <section id="mapa" class="topic-map">
+              <h2>Ubicación</h2>
+              <p>
+                <a class="btn" href={c.mapDirections}>Calcular recorrido en Google Maps ↗</a>
+              </p>
+              <div class="paper">
+                <iframe
+                  src={c.mapEmbed}
+                  title={`Mapa: ${c.h1}`}
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </section>
+            <section id="faq" class="section faq">
+              <h2>Preguntas frecuentes</h2>
+              {c.faq.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+            </section>
+            <section id="fuentes" class="section">
+              <h2>Fuentes y actualización</h2>
+              <p>Revisión de esta guía: {c.updated}. Esta página es una guía independiente y no está afiliada a la Municipalidad, la plaza ni el MMAU. La valoración de Google Maps no es una puntuación recogida por este sitio.</p>
+              <ul>
+                {c.sources.map((s) => <li><a href={s.url}>{s.name} ↗</a></li>)}
+              </ul>
+            </section>
+          </div>
+          {
+            related.length > 0 && (
+              <aside class="topic-aside">
+                <h2 class="aside-title">Temas relacionados</h2>
+                <ul class="related-list">
+                  {related.map((r) => (
+                    <li><a href={`/${r.slug}/`}>{r.title}</a></li>
+                  ))}
+                </ul>
+              </aside>
+            )
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .topic-hero {
+    min-height: 52vh;
+    display: grid;
+    align-items: end;
+    background: linear-gradient(90deg, #151b18e8 0%, #151b18a0 55%, #151b1830 100%),
+      url('/images/plaza-espana-mmau-night.jpg') center/cover;
+  }
+  .topic-hero .inner {
+    padding: 6rem 0 3.5rem;
+    color: white;
+    max-width: 760px;
+  }
+  .topic-hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    line-height: 1.05;
+    margin: 0.4rem 0 1rem;
+  }
+  .topic-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 3rem;
+    align-items: start;
+  }
+  .topic-section {
+    margin: 0 0 2.2rem;
+  }
+  .topic-section h2,
+  .topic-body > h2,
+  .faq h2,
+  .topic-map h2,
+  .section > .shell > h2 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    margin: 0 0 1rem;
+  }
+  .topic-section ul {
+    margin: 0.6rem 0 0;
+    padding-left: 1.2rem;
+  }
+  .topic-section li {
+    margin: 0.3rem 0;
+  }
+  .topic-map iframe {
+    width: 100%;
+    height: 420px;
+    border: 0;
+    border-radius: 8px;
+  }
+  .topic-aside {
+    position: sticky;
+    top: 1rem;
+    padding: 1.4rem;
+    border: 1px solid #d6c9b6;
+    background: #fffaf2;
+    border-radius: 12px;
+  }
+  .aside-title {
+    font-size: 1.1rem;
+    margin: 0 0 0.8rem;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--brick);
+  }
+  .related-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .related-list li {
+    margin: 0 0 0.7rem;
+    padding-left: 0.9rem;
+    border-left: 3px solid var(--gold);
+  }
+  .related-list a {
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .related-list a:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 900px) {
+    .topic-grid {
+      grid-template-columns: 1fr;
+    }
+    .topic-aside {
+      position: static;
+    }
+  }
+</style>

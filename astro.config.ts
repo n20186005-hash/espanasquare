@@ -9,6 +9,7 @@ export default defineConfig({
   site: SITE || undefined,
   output: 'server',
   session: false,
+  trailingSlash: 'always',
   adapter: cloudflare({ imageService: 'compile' }),
   integrations: SITE ? [sitemap()] : [],
   vite: { plugins: [tailwindcss()], build: { assetsInlineLimit: 0 } }
