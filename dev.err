@@ -1,0 +1,15 @@
+[31m[1m18:21:58[22m [ERROR] [vite][39m There was an access violation in the runtime.
+On Windows, this may be caused by an outdated Microsoft Visual C++ Redistributable library.
+Check that you have the latest version installed.
+See https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
+The Workers runtime failed to start. There was likely a problem with the workerd binary or your configuration.
+Runtime stderr:
+*** Received structured exception #0xc0000005: access violation; stack: 7ff94fdd3277 7ff6fef7ff0d 7ff6fef7ffd3 7ff6fef5c93c 7ff6fef5c8f0 7ff6fe3827b6 7ff6fe382f3f 7ff6fce2603f 7ff6fe530af2 7ff6fe5379f6 7ff6fe53104b 7ff6fe5379f6 7ff6fe52e59b 7ff6fce11ea8 7ff7003fdb3e 7ff959217973 7ff95a81a2f0
+  [1mLocation:[22m
+    [4mH:\GitHub\espanasquare\node_modules\miniflare\dist\src\index.js:98010:13[24m
+  [1mStack trace:[22m
+[2m    at StartupLogBuffer.handleStartupFailure (H:\GitHub\espanasquare\node_modules\miniflare\dist\src\index.js:98010:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Mutex.runWith (H:\GitHub\espanasquare\node_modules\miniflare\dist\src\index.js:85701:48)
+    at async _Miniflare.dispatchFetch (H:\GitHub\espanasquare\node_modules\miniflare\dist\src\index.js:113019:5)
+    at async Promise.all (index 0)[22m
